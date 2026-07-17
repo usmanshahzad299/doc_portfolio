@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">Dr. Portfolio logo</title>
+  <desc id="desc">Blue circular medical cross logo.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#1e40af" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="url(#bg)" />
+  <circle cx="100" cy="100" r="78" fill="#ffffff" opacity="0.18" />
+  <rect x="86" y="48" width="28" height="104" rx="8" fill="#ffffff" />
+  <rect x="48" y="86" width="104" height="28" rx="8" fill="#ffffff" />
+</svg>

@@ -1,0 +1,39 @@
+---
+description: Guide for using shadcn UI components in the project
+globs: *.tsx,*.ts,*.jsx,*.js
+---
+
+# shadcn UI Component Usage
+
+This project uses **shadcn UI** for all UI elements.
+
+## Installation
+
+### Initialize shadcn (if not already initialized)
+
+If shadcn is not initialized in the project, run:
+
+```bash
+npx shadcn@latest init
+```
+
+### Adding Components
+
+When a specific component is not installed, use the following command format:
+
+```bash
+npx shadcn@latest add <component-name>
+```
+
+**Example:** To install the button component:
+
+```bash
+npx shadcn@latest add button
+```
+
+## Guidelines
+
+- Always use shadcn UI components for UI elements
+- Check if a component is already installed before adding it
+- shadcn components are typically located in the `components/ui/` directory
+- All shadcn components are built on top of Radix UI primitives and styled with Tailwind CSS

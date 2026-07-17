@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String
+  role      String     @default("doctor")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  posts     BlogPost[]
+}
+
+model BlogPost {
+  id         String   @id @default(cuid())
+  title      String
+  slug       String   @unique
+  excerpt    String
+  content    String   @db.Text
+  coverImage String?
+  published  Boolean  @default(false)
+  authorId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  author     User     @relation(fields: [authorId], references: [id])
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  patientName String
+  gender      String?
+  age         Int?
+  bookingFor  String   @default("self")
+  email       String
+  phone       String
+  date        DateTime
+  time        String
+  reason      String
+  status      String   @default("pending")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  patientName String
+  content     String   @db.Text
+  rating      Int      @default(5)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String?
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
