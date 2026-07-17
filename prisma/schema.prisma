@@ -24,7 +24,7 @@ model BlogPost {
   slug       String   @unique
   excerpt    String
   content    String   @db.Text
-  coverImage String?
+  coverImage String?  @db.LongText
   published  Boolean  @default(false)
   authorId   String
   createdAt  DateTime @default(now())
