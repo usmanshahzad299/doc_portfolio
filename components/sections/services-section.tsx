@@ -41,7 +41,7 @@ export function ServicesSection() {
   useEffect(() => {
     async function loadServices() {
       try {
-        const response = await fetch("/api/services");
+        const response = await fetch("/api/services", { cache: "no-store" });
         if (!response.ok) {
           throw new Error("Failed to fetch services");
         }

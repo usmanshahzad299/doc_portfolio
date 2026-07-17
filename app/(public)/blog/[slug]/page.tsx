@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import {
   absoluteUrl,
   BLOG_OG_FALLBACK_IMAGE,
@@ -18,6 +17,8 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -27,12 +28,12 @@ function getInitials(name: string) {
     .join("");
 }
 
-const getPublishedPostBySlug = cache(async (slug: string) => {
+async function getPublishedPostBySlug(slug: string) {
   return prisma.blogPost.findUnique({
     where: { slug },
     include: { author: true },
   });
-});
+}
 
 export async function generateStaticParams() {
   const posts = await prisma.blogPost.findMany({

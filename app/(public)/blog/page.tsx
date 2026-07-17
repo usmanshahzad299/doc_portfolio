@@ -10,6 +10,8 @@ import {
   BUSINESS_DETAILS,
 } from "@/lib/site-config";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Medical Blog",
   description:

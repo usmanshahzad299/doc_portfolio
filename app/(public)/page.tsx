@@ -13,6 +13,8 @@ import {
   DEFAULT_OG_IMAGE,
 } from "@/lib/site-config";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Compassionate Family Medicine and Preventive Care",
   description:
