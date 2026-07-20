@@ -6,6 +6,7 @@ import {
   Calendar,
   FileText,
   MessageSquareQuote,
+  Settings,
   Stethoscope,
 } from "lucide-react";
 
@@ -37,6 +38,12 @@ const navItems = [
     href: "/admin/services",
     icon: Stethoscope,
     isActive: (pathname: string) => pathname.startsWith("/admin/services"),
+  },
+  {
+    label: "Site Settings",
+    href: "/admin/settings",
+    icon: Settings,
+    isActive: (pathname: string) => pathname.startsWith("/admin/settings"),
   },
 ];
 

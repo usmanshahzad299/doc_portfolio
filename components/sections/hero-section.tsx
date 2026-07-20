@@ -52,15 +52,18 @@ export function HeroSection() {
           {/* Stats or Quick Info */}
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <Reveal delay={0.2}>
-              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
+                <div className="text-3xl font-bold text-blue-600 mb-2 bg-dark">
                   <StatCounter target={15} suffix="+" />
                 </div>
-                <div className="text-gray-600">Years Experience</div>
+                <div className="text-gray-600 ">Years Experience</div>
               </div>
             </Reveal>
             <Reveal delay={0.26}>
-              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm">
+              <div
+                className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow
+              "
+              >
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   <StatCounter target={5000} suffix="+" />
                 </div>
@@ -68,7 +71,10 @@ export function HeroSection() {
               </div>
             </Reveal>
             <Reveal delay={0.32}>
-              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm">
+              <div
+                className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow
+              "
+              >
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   <StatCounter target={24} suffix="/7" />
                 </div>

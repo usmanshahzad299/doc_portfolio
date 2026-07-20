@@ -28,6 +28,38 @@ async function main() {
   console.log(`Created user with id: ${user.id}`);
   console.log("Email: admin@example.com");
   console.log("Password: admin123");
+
+  await prisma.siteSettings.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      aboutImage: "/docImage.png",
+      bioParagraph1:
+        "With over 15 years of experience in medicine, I am committed to providing exceptional healthcare services tailored to each patient's unique needs.",
+      bioParagraph2:
+        "My approach combines evidence-based medicine with compassionate care, ensuring that every patient receives the attention and treatment they deserve.",
+      stat1Value: "Board Certified",
+      stat1Label: "Licensed Practitioner",
+      stat2Value: "15+ Years",
+      stat2Label: "Clinical Experience",
+      contactPhone: "+1 (555) 123-4567",
+      contactEmail: "contact@doctorportfolio.com",
+      addressStreet: "123 Medical Plaza, Suite 400",
+      addressLocality: "San Francisco",
+      addressRegion: "CA",
+      addressPostal: "94102",
+      mondayHours: "8:00 AM - 6:00 PM",
+      tuesdayHours: "8:00 AM - 6:00 PM",
+      wednesdayHours: "8:00 AM - 6:00 PM",
+      thursdayHours: "8:00 AM - 6:00 PM",
+      fridayHours: "8:00 AM - 6:00 PM",
+      saturdayHours: "9:00 AM - 2:00 PM",
+      sundayHours: "Closed",
+    },
+  });
+
+  console.log("Seeded singleton site settings.");
   console.log("Seeding finished.");
 }
 

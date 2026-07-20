@@ -1,7 +1,14 @@
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 import { BUSINESS_DETAILS } from "@/lib/site-config";
+import { getSiteSettings } from "@/lib/site-settings";
+import { getGroupedWorkingHours } from "@/lib/utils";
 
-export function Footer() {
+export async function Footer() {
+  noStore();
+  const settings = await getSiteSettings();
+  const groupedWorkingHours = getGroupedWorkingHours(settings);
+
   return (
     <footer className="bg-slate-950 text-slate-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -23,27 +30,42 @@ export function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/#about" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/#about"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/#specializations" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/#specializations"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Specializations
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/#services"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/blog"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/#appointments" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/#appointments"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Appointments
                 </Link>
               </li>
@@ -54,13 +76,20 @@ export function Footer() {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Contact</h4>
             <ul className="space-y-2">
-              <li>📞 {BUSINESS_DETAILS.phone}</li>
-              <li>📧 {BUSINESS_DETAILS.email}</li>
-              <li>📍 {BUSINESS_DETAILS.address.streetAddress}</li>
+              <li className="break-words cursor-pointer hover:text-blue-400 transition-colors">
+                📞 {settings.contactPhone}
+              </li>
+              <li className="break-words cursor-pointer hover:text-blue-400 transition-colors">
+                📧 {settings.contactEmail}
+              </li>
+              <li className="break-words cursor-pointer hover:text-blue-400 transition-colors">
+                📍 {settings.addressStreet}
+              </li>
               <li>
-                {BUSINESS_DETAILS.address.addressLocality},{" "}
-                {BUSINESS_DETAILS.address.addressRegion}{" "}
-                {BUSINESS_DETAILS.address.postalCode}
+                <span className="break-words cursor-pointer hover:text-blue-400 transition-colors">
+                  {settings.addressLocality}, {settings.addressRegion}{" "}
+                  {settings.addressPostal}
+                </span>
               </li>
             </ul>
           </div>
@@ -68,17 +97,36 @@ export function Footer() {
           {/* Hours */}
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Hours</h4>
-            <ul className="space-y-2">
-              <li>Monday - Friday: 8am - 6pm</li>
-              <li>Saturday: 9am - 2pm</li>
-              <li>Sunday: Closed</li>
-            </ul>
+            <div>
+              {groupedWorkingHours.map(({ days, hours }) => {
+                const isClosed = hours.trim().toLowerCase() === "closed";
+                return (
+                  <div
+                    key={days}
+                    className="flex items-center justify-between border-b border-white/10 py-2 last:border-b-0"
+                  >
+                    <span className="text-sm text-slate-300 cursor-pointer">
+                      {days}
+                    </span>
+                    <span
+                      className={[
+                        "text-right text-sm font-semibold whitespace-nowrap",
+                        isClosed ? "text-slate-400" : "text-white",
+                      ].join(" ")}
+                    >
+                      {hours}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         <div className="mt-8 border-t border-slate-800 pt-8 text-center">
           <p className="text-slate-400">
-            © {new Date().getFullYear()} Dr. Portfolio. All rights reserved.
+            © {new Date().getFullYear()} Dr. Ali Akbar Portfolio. All rights
+            reserved.
           </p>
         </div>
       </div>

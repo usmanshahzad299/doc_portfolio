@@ -33,7 +33,7 @@ export function StickyAppointmentCta() {
       />
       <Link
         href="/#appointments"
-        className="inline-flex items-center gap-2 rounded-full border bg-blue-600 text-white px-4 py-2 text-sm font-semibold text-blue-700 shadow-lg backdrop-blur hover:-translate-y-0.5 hover:bg-blue-50 hover:text-blue-600"
+        className="inline-flex items-center gap-2 rounded-full  bg-blue-600 text-white px-4 py-2 text-sm font-semibold text-blue-700 shadow-lg backdrop-blur hover:-translate-y-0.5 hover:bg-blue-50 hover:text-blue-600"
       >
         Book Appointment
         <span aria-hidden>→</span>

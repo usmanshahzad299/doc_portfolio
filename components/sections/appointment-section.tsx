@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Reveal } from "@/components/ui/reveal";
-import { BUSINESS_DETAILS } from "@/lib/site-config";
+import { getGroupedWorkingHours } from "@/lib/utils";
 
 type AppointmentFormData = {
   patientName: string;
@@ -27,6 +27,38 @@ type AppointmentFormData = {
   date: string;
   time: string;
   additionalInfo: string;
+};
+
+type SiteSettingsContact = {
+  contactPhone: string;
+  contactEmail: string;
+  addressStreet: string;
+  addressLocality: string;
+  addressRegion: string;
+  addressPostal: string;
+  mondayHours: string;
+  tuesdayHours: string;
+  wednesdayHours: string;
+  thursdayHours: string;
+  fridayHours: string;
+  saturdayHours: string;
+  sundayHours: string;
+};
+
+const initialSettings: SiteSettingsContact = {
+  contactPhone: "+1 (555) 123-4567",
+  contactEmail: "contact@doctorportfolio.com",
+  addressStreet: "123 Medical Plaza, Suite 400",
+  addressLocality: "San Francisco",
+  addressRegion: "CA",
+  addressPostal: "94102",
+  mondayHours: "8:00 AM - 6:00 PM",
+  tuesdayHours: "8:00 AM - 6:00 PM",
+  wednesdayHours: "8:00 AM - 6:00 PM",
+  thursdayHours: "8:00 AM - 6:00 PM",
+  fridayHours: "8:00 AM - 6:00 PM",
+  saturdayHours: "9:00 AM - 2:00 PM",
+  sundayHours: "Closed",
 };
 
 const initialFormData: AppointmentFormData = {
@@ -45,9 +77,44 @@ const initialFormData: AppointmentFormData = {
 export function AppointmentSection() {
   const [formData, setFormData] =
     useState<AppointmentFormData>(initialFormData);
+  const [settings, setSettings] =
+    useState<SiteSettingsContact>(initialSettings);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const response = await fetch("/api/settings", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("Failed to fetch settings");
+        }
+
+        const data = (await response.json()) as Partial<SiteSettingsContact>;
+        setSettings({
+          contactPhone: data.contactPhone ?? initialSettings.contactPhone,
+          contactEmail: data.contactEmail ?? initialSettings.contactEmail,
+          addressStreet: data.addressStreet ?? initialSettings.addressStreet,
+          addressLocality:
+            data.addressLocality ?? initialSettings.addressLocality,
+          addressRegion: data.addressRegion ?? initialSettings.addressRegion,
+          addressPostal: data.addressPostal ?? initialSettings.addressPostal,
+          mondayHours: data.mondayHours ?? initialSettings.mondayHours,
+          tuesdayHours: data.tuesdayHours ?? initialSettings.tuesdayHours,
+          wednesdayHours: data.wednesdayHours ?? initialSettings.wednesdayHours,
+          thursdayHours: data.thursdayHours ?? initialSettings.thursdayHours,
+          fridayHours: data.fridayHours ?? initialSettings.fridayHours,
+          saturdayHours: data.saturdayHours ?? initialSettings.saturdayHours,
+          sundayHours: data.sundayHours ?? initialSettings.sundayHours,
+        });
+      } catch {
+        setSettings(initialSettings);
+      }
+    }
+
+    loadSettings();
+  }, []);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -110,6 +177,8 @@ export function AppointmentSection() {
     }
   };
 
+  const groupedWorkingHours = getGroupedWorkingHours(settings);
+
   return (
     <section id="appointments" className="bg-slate-100 py-20 gradient-surface">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,7 +197,7 @@ export function AppointmentSection() {
             <Reveal className="md:col-span-3">
               <Card className="rounded-2xl border-slate-200 bg-white shadow-md">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-slate-900">
+                  <CardTitle className="text-3xl text-center font-bold text-blue-600">
                     Request an Appointment
                   </CardTitle>
                 </CardHeader>
@@ -307,7 +376,7 @@ export function AppointmentSection() {
 
                       <Button
                         type="submit"
-                        className="h-11 w-full rounded-lg text-white bg-blue-700 hover:bg-blue-800"
+                        className="h-11 w-full rounded-lg text-white bg-blue-700 hover:bg-blue-800 cursor-pointer"
                         disabled={loading}
                       >
                         {loading ? "Submitting..." : "Request Appointment"}
@@ -326,56 +395,76 @@ export function AppointmentSection() {
                 Get In Touch
               </h2>
               <div className="space-y-6 md:h-full">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Card className="rounded-2xl border-slate-200 bg-white shadow-sm">
-                    <CardContent className="pt-4">
+                    <CardContent className="pt-2">
                       <p className="text-sm font-semibold text-slate-900">
                         Phone
                       </p>
                       <p className="mt-2 text-sm text-slate-600">
-                        Main: {BUSINESS_DETAILS.phone}
+                        <span className="break-words">
+                          Main: {settings.contactPhone}
+                        </span>
                       </p>
                     </CardContent>
                   </Card>
 
                   <Card className="rounded-2xl border-slate-200 bg-white shadow-sm">
-                    <CardContent className="pt-6">
+                    <CardContent className="pt-2">
                       <p className="text-sm font-semibold text-slate-900">
                         Email
                       </p>
-                      <p className="mt-2 text-sm text-slate-600 break-all">
-                        {BUSINESS_DETAILS.email}
+                      <p className="mt-2 text-sm text-slate-600 break-words">
+                        {settings.contactEmail}
                       </p>
                     </CardContent>
                   </Card>
 
                   <Card className="rounded-2xl border-slate-200 bg-white shadow-sm">
-                    <CardContent className="pt-6">
+                    <CardContent className="pt-2">
                       <p className="text-sm font-semibold text-slate-900">
                         Location
                       </p>
-                      <p className="mt-2 text-sm text-slate-600">
-                        {BUSINESS_DETAILS.address.streetAddress}
+                      <p className="mt-2 break-words text-sm text-slate-600">
+                        {settings.addressStreet}
                       </p>
-                      <p className="text-sm text-slate-600">
-                        {BUSINESS_DETAILS.address.addressLocality},{" "}
-                        {BUSINESS_DETAILS.address.addressRegion}{" "}
-                        {BUSINESS_DETAILS.address.postalCode}
+                      <p className="break-words text-sm text-slate-600">
+                        {settings.addressLocality}, {settings.addressRegion}{" "}
+                        {settings.addressPostal}
                       </p>
                     </CardContent>
                   </Card>
 
                   <Card className="rounded-2xl border-slate-200 bg-white shadow-sm">
-                    <CardContent className="pt-6">
-                      <p className="text-sm font-semibold text-slate-900">
+                    <CardContent className="pt-2 px-6 md:px-2">
+                      <p className="mb-2 text-sm font-semibold text-slate-900">
                         Hours
                       </p>
-                      <p className="mt-2 text-sm text-slate-600">
-                        Mon-Fri: 8:00 AM - 6:00 PM
-                      </p>
-                      <p className="text-sm text-slate-600">
-                        Sat: 9:00 AM - 2:00 PM
-                      </p>
+                      <div className="space-y-0">
+                        {groupedWorkingHours.map((day, i) => (
+                          <div
+                            key={day.days}
+                            className={`flex items-center justify-between py-1.5 ${
+                              i !== groupedWorkingHours.length - 1
+                                ? "border-b border-slate-100"
+                                : ""
+                            }`}
+                          >
+                            <span className="text-xs text-slate-600">
+                              {day.days}
+                            </span>
+                            <span
+                              className={`text-xs font-medium whitespace-nowrap ${
+                                day.hours.toLowerCase() === "closed"
+                                  ? "text-slate-400"
+                                  : "text-slate-900"
+                              }`}
+                            >
+                              {day.hours}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </CardContent>
                   </Card>
                 </div>

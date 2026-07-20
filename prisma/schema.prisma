@@ -69,3 +69,28 @@ model Service {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model SiteSettings {
+  id              Int      @id @default(1)
+  aboutImage      String?  @db.LongText
+  bioParagraph1   String   @db.Text
+  bioParagraph2   String   @db.Text
+  stat1Value      String
+  stat1Label      String
+  stat2Value      String
+  stat2Label      String
+  contactPhone    String
+  contactEmail    String
+  addressStreet   String
+  addressLocality String
+  addressRegion   String
+  addressPostal   String
+  mondayHours     String
+  tuesdayHours    String
+  wednesdayHours  String
+  thursdayHours   String
+  fridayHours     String
+  saturdayHours   String
+  sundayHours     String
+  updatedAt       DateTime @updatedAt
+}
