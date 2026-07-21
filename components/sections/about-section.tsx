@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
 import { unstable_noStore as noStore } from "next/cache";
 import { getSiteSettings } from "@/lib/site-settings";
 import { AnimatedNumber } from "../ui/animated-number";
+import { ScrollLink } from "../ui/scroll-link";
 
 export async function AboutSection() {
   noStore();
@@ -78,14 +78,14 @@ export async function AboutSection() {
                   />
                 </div>
                 <div className="flex flex-col gap-4 justify-center items-center">
-                  <Link href="/#appointments" className="w-full">
+                  <ScrollLink targetId="appointments" className="w-full">
                     <Button
                       size="lg"
                       className="text-lg px-8 py-6 mt-4 rounded-full bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 cursor-pointer w-full"
                     >
                       Book Appointment
                     </Button>
-                  </Link>
+                  </ScrollLink>
                 </div>
               </Reveal>
             </div>

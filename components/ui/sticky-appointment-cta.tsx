@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ScrollLink } from "./scroll-link";
 
 export function StickyAppointmentCta() {
   const [visible, setVisible] = useState(false);
@@ -31,13 +32,13 @@ export function StickyAppointmentCta() {
         aria-hidden
         className="absolute inset-0 -z-10 rounded-full  blur-sm animate-pulse px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-lg"
       />
-      <Link
-        href="/#appointments"
+      <ScrollLink
+        targetId="appointments"
         className="inline-flex items-center gap-2 rounded-full  bg-blue-600 text-white px-4 py-2 text-sm font-semibold text-blue-700 shadow-lg backdrop-blur hover:-translate-y-0.5 hover:bg-blue-50 hover:text-blue-600"
       >
         Book Appointment
         <span aria-hidden>→</span>
-      </Link>
+      </ScrollLink>
     </div>
   );
 }

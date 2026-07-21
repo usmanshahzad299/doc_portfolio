@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { ScrollLink } from "../ui/scroll-link";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,47 +22,47 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/#about"
+            <ScrollLink
+              targetId="about"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               About
-            </Link>
-            <Link
-              href="/#specializations"
+            </ScrollLink>
+            <ScrollLink
+              targetId="specializations"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Specializations
-            </Link>
-            <Link
-              href="/#services"
+            </ScrollLink>
+            <ScrollLink
+              targetId="services"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Services
-            </Link>
-            <Link
-              href="/#testimonials"
+            </ScrollLink>
+            <ScrollLink
+              targetId="testimonials"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Testimonials
-            </Link>
+            </ScrollLink>
             <Link
               href="/blog"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Blog
             </Link>
-            <Link
-              href="/#appointments"
+            <ScrollLink
+              targetId="appointments"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Contact
-            </Link>
-            <Link href="/#appointments">
+            </ScrollLink>
+            <ScrollLink targetId="appointments">
               <Button className="rounded-full bg-blue-600 text-white px-5 hover:-translate-y-0.5 hover:bg-blue-700 cursor-pointer">
                 Book Appointment
               </Button>
-            </Link>
+            </ScrollLink>
           </div>
 
           {/* Mobile menu button */}
@@ -98,34 +99,34 @@ export function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
             <div className="flex flex-col space-y-4">
-              <Link
-                href="/#about"
+              <ScrollLink
+                targetId="about"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
-              </Link>
-              <Link
-                href="/#specializations"
+              </ScrollLink>
+              <ScrollLink
+                targetId="specializations"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Specializations
-              </Link>
-              <Link
-                href="/#services"
+              </ScrollLink>
+              <ScrollLink
+                targetId="services"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
-              </Link>
-              <Link
-                href="/#testimonials"
+              </ScrollLink>
+              <ScrollLink
+                targetId="testimonials"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Testimonials
-              </Link>
+              </ScrollLink>
               <Link
                 href="/blog"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
@@ -133,21 +134,22 @@ export function Header() {
               >
                 Blog
               </Link>
-              <Link
-                href="/#contact"
+              <ScrollLink
+                targetId="appointments"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
-              </Link>
-              <Link
-                href="/#appointments"
+              </ScrollLink>
+
+              <ScrollLink
+                targetId="appointments"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
                   Book Appointment
                 </Button>
-              </Link>
+              </ScrollLink>
             </div>
           </div>
         )}

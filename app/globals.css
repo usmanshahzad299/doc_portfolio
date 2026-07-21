@@ -28,7 +28,10 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offsets sticky header height so section headers aren't covered */
+  }
   .dark {
     --background: 0 0% 9%;
     --foreground: 0 0% 98%;

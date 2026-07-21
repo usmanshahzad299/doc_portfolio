@@ -1,19 +1,16 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Reveal } from "@/components/ui/reveal";
 import { unstable_noStore as noStore } from "next/cache";
 import { getSiteSettings } from "@/lib/site-settings";
 import { AnimatedNumber } from "@/components/ui/animated-number";
+import { ScrollLink } from "@/components/ui/scroll-link";
 
 export async function HeroSection() {
   noStore();
   const settings = await getSiteSettings();
 
   return (
-    // <section className="relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-100/60 pt-12">
     <section className="relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-white">
-      {/* <div className="absolute -left-24 top-16 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl" />
-      <div className="absolute -right-16 bottom-10 h-72 w-72 rounded-full bg-indigo-200/35 blur-3xl" /> */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <Reveal delay={0.05}>
@@ -34,15 +31,16 @@ export async function HeroSection() {
 
           <Reveal delay={0.15}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/#appointments">
+              <ScrollLink targetId="appointments">
                 <Button
                   size="lg"
                   className="text-lg px-8 py-6 rounded-full bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 cursor-pointer"
                 >
                   Book Appointment
                 </Button>
-              </Link>
-              <Link href="#services">
+              </ScrollLink>
+
+              <ScrollLink targetId="services">
                 <Button
                   variant="outline"
                   size="lg"
@@ -50,36 +48,32 @@ export async function HeroSection() {
                 >
                   Our Services
                 </Button>
-              </Link>
+              </ScrollLink>
             </div>
           </Reveal>
 
-          {/* Stats or Quick Info */}
+          {/* Stats Section */}
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <Reveal delay={0.2}>
               <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
-                <div className="text-3xl font-bold text-blue-600 mb-2 bg-dark">
-                  <AnimatedNumber value={settings.stat1Value} />
-                </div>
-                <div className="text-gray-600 ">Clinical Experience</div>
-              </div>
-            </Reveal>
-            <Reveal delay={0.26}>
-              <div
-                className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow
-              "
-              >
                 <div className="text-3xl font-bold text-blue-600 mb-2">
-                  <AnimatedNumber value={settings.stat2Value} />
+                  <AnimatedNumber value={settings?.stat1Value || "15+"} />
                 </div>
-                <div className="text-gray-600">Patients Served</div>
+                <div className="text-gray-600">Years Experience</div>
               </div>
             </Reveal>
+
+            <Reveal delay={0.26}>
+              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
+                <div className="text-3xl font-bold text-blue-600 mb-2">
+                  <AnimatedNumber value={settings?.stat2Value || "5000+"} />
+                </div>
+                <div className="text-gray-600">Happy Patients</div>
+              </div>
+            </Reveal>
+
             <Reveal delay={0.32}>
-              <div
-                className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow
-              "
-              >
+              <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   24/7
                 </div>
