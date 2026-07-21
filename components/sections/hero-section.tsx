@@ -57,9 +57,11 @@ export async function HeroSection() {
             <Reveal delay={0.2}>
               <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
                 <div className="text-3xl font-bold text-blue-600 mb-2">
-                  <AnimatedNumber value={settings?.stat1Value || "15+"} />
+                  <AnimatedNumber
+                    value={`${settings?.stat1Value || "15"} Years`}
+                  />
                 </div>
-                <div className="text-gray-600">Years Experience</div>
+                <div className="text-gray-600">Clinical Experience</div>
               </div>
             </Reveal>
 

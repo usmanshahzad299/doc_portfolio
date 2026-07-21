@@ -76,7 +76,7 @@ export function AnimatedNumber({
   return (
     <span ref={elementRef}>
       {displayCount.toLocaleString()}
-      {suffix}
+      {suffix ? ` ${suffix}` : ""}
     </span>
   );
 }

@@ -46,7 +46,9 @@ export async function AboutSection() {
                     <CardContent className="min-h-[88px] pt-6">
                       <div className="mb-1 line-clamp-1 text-2xl font-bold text-blue-600">
                         {/* {settings.stat1Value} */}
-                        <AnimatedNumber value={settings.stat1Value} />
+                        <AnimatedNumber
+                          value={`${settings.stat1Value} Years`}
+                        />
                       </div>
                       <div className="line-clamp-2 text-sm text-gray-600">
                         Clinical Experience
