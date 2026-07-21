@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { unstable_noStore as noStore } from "next/cache";
 import { getSiteSettings } from "@/lib/site-settings";
+import { AnimatedNumber } from "../ui/animated-number";
 
 export async function AboutSection() {
   noStore();
@@ -37,33 +38,29 @@ export async function AboutSection() {
                   Dedicated to Your Health and Wellness
                 </h2>
                 <div className="space-y-4 text-gray-600 leading-relaxed">
-                  <p>{settings.bioParagraph1}</p>
-                  <p>{settings.bioParagraph2}</p>
-                  {/* <p>
-                    I believe in building lasting relationships with my
-                    patients, taking the time to listen, understand, and address
-                    their concerns with professionalism and empathy.
-                  </p> */}
+                  <p className="whitespace-pre-line">{settings.bioParagraph}</p>
                 </div>
 
                 <div className="mt-8 grid grid-cols-2 gap-4">
                   <Card className="rounded-2xl border-slate-200 shadow-sm">
                     <CardContent className="min-h-[88px] pt-6">
                       <div className="mb-1 line-clamp-1 text-2xl font-bold text-blue-600">
-                        {settings.stat1Value}
+                        {/* {settings.stat1Value} */}
+                        <AnimatedNumber value={settings.stat1Value} />
                       </div>
                       <div className="line-clamp-2 text-sm text-gray-600">
-                        {settings.stat1Label}
+                        Clinical Experience
                       </div>
                     </CardContent>
                   </Card>
                   <Card className="rounded-2xl border-slate-200 shadow-sm">
                     <CardContent className="min-h-[88px] pt-6">
                       <div className="mb-1 line-clamp-1 text-2xl font-bold text-blue-600">
-                        {settings.stat2Value}
+                        {/* {settings.stat2Value} */}
+                        <AnimatedNumber value={settings.stat2Value} />
                       </div>
                       <div className="line-clamp-2 text-sm text-gray-600">
-                        {settings.stat2Label}
+                        Patients Served
                       </div>
                     </CardContent>
                   </Card>

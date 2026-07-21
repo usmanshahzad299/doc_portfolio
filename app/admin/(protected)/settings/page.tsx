@@ -11,12 +11,9 @@ import { WORKING_HOUR_FIELDS, type WorkingHourField } from "@/lib/utils";
 
 type SettingsFormData = {
   aboutImage: string;
-  bioParagraph1: string;
-  bioParagraph2: string;
+  bioParagraph: string;
   stat1Value: string;
-  stat1Label: string;
   stat2Value: string;
-  stat2Label: string;
   contactPhone: string;
   contactEmail: string;
   addressStreet: string;
@@ -34,12 +31,9 @@ type SettingsFormData = {
 
 const initialFormData: SettingsFormData = {
   aboutImage: "",
-  bioParagraph1: "",
-  bioParagraph2: "",
+  bioParagraph: "",
   stat1Value: "",
-  stat1Label: "",
   stat2Value: "",
-  stat2Label: "",
   contactPhone: "",
   contactEmail: "",
   addressStreet: "",
@@ -56,12 +50,9 @@ const initialFormData: SettingsFormData = {
 };
 
 const requiredFields: (keyof Omit<SettingsFormData, "aboutImage">)[] = [
-  "bioParagraph1",
-  "bioParagraph2",
+  "bioParagraph",
   "stat1Value",
-  "stat1Label",
   "stat2Value",
-  "stat2Label",
   "contactPhone",
   "contactEmail",
   "addressStreet",
@@ -77,11 +68,22 @@ type WorkingDayState = {
 };
 
 type WorkingHoursState = Record<WorkingHourField, WorkingDayState>;
+type BulkApplyDaysState = Record<WorkingHourField, boolean>;
 
 const DEFAULT_DAY_STATE: WorkingDayState = {
   closed: false,
   startTime: "09:00",
   endTime: "17:00",
+};
+
+const DEFAULT_BULK_APPLY_DAYS: BulkApplyDaysState = {
+  mondayHours: true,
+  tuesdayHours: true,
+  wednesdayHours: true,
+  thursdayHours: true,
+  fridayHours: true,
+  saturdayHours: false,
+  sundayHours: false,
 };
 
 function to24Hour(hour: number, meridiem: string) {
@@ -198,6 +200,13 @@ export default function AdminSettingsPage() {
   const [workingHours, setWorkingHours] = useState<WorkingHoursState>(() =>
     parseWorkingHoursFromSettings(initialFormData),
   );
+  const [defaultSchedule, setDefaultSchedule] = useState({
+    startTime: "09:00",
+    endTime: "17:00",
+  });
+  const [bulkApplyDays, setBulkApplyDays] = useState<BulkApplyDaysState>(
+    DEFAULT_BULK_APPLY_DAYS,
+  );
 
   useEffect(() => {
     async function loadSettings() {
@@ -210,12 +219,9 @@ export default function AdminSettingsPage() {
         const settings = await response.json();
         const nextFormData = {
           aboutImage: settings.aboutImage ?? "",
-          bioParagraph1: settings.bioParagraph1 ?? "",
-          bioParagraph2: settings.bioParagraph2 ?? "",
+          bioParagraph: settings.bioParagraph ?? "",
           stat1Value: settings.stat1Value ?? "",
-          stat1Label: settings.stat1Label ?? "",
           stat2Value: settings.stat2Value ?? "",
-          stat2Label: settings.stat2Label ?? "",
           contactPhone: settings.contactPhone ?? "",
           contactEmail: settings.contactEmail ?? "",
           addressStreet: settings.addressStreet ?? "",
@@ -315,6 +321,36 @@ export default function AdminSettingsPage() {
         [timeField]: value,
       },
     }));
+  };
+
+  const handleBulkDayToggle = (field: WorkingHourField, checked: boolean) => {
+    setBulkApplyDays((prev) => ({
+      ...prev,
+      [field]: checked,
+    }));
+  };
+
+  const applyDefaultScheduleToSelectedDays = () => {
+    if (defaultSchedule.startTime >= defaultSchedule.endTime) {
+      setError("Default schedule start time must be earlier than end time.");
+      return;
+    }
+
+    setError("");
+    setWorkingHours((prev) => {
+      const next = { ...prev };
+      for (const field of WORKING_HOUR_FIELDS) {
+        if (!bulkApplyDays[field.key]) {
+          continue;
+        }
+        next[field.key] = {
+          closed: false,
+          startTime: defaultSchedule.startTime,
+          endTime: defaultSchedule.endTime,
+        };
+      }
+      return next;
+    });
   };
 
   async function uploadImageIfSelected() {
@@ -465,69 +501,39 @@ export default function AdminSettingsPage() {
             ) : null}
 
             <div className="space-y-2">
-              <Label htmlFor="bioParagraph1">Bio Paragraph 1 *</Label>
+              <Label htmlFor="bioParagraph">Biography *</Label>
               <Textarea
-                id="bioParagraph1"
-                name="bioParagraph1"
-                value={formData.bioParagraph1}
+                id="bioParagraph"
+                name="bioParagraph"
+                value={formData.bioParagraph}
                 onChange={handleChange}
-                rows={4}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bioParagraph2">Bio Paragraph 2 *</Label>
-              <Textarea
-                id="bioParagraph2"
-                name="bioParagraph2"
-                value={formData.bioParagraph2}
-                onChange={handleChange}
-                rows={4}
+                rows={7}
                 required
               />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="stat1Value">Stat 1 Value *</Label>
+                <Label htmlFor="stat1Value">Clinical Experience Value *</Label>
                 <Input
                   id="stat1Value"
                   name="stat1Value"
+                  placeholder="15+ Years"
                   value={formData.stat1Value}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="stat1Label">Stat 1 Label *</Label>
-                <Input
-                  id="stat1Label"
-                  name="stat1Label"
-                  value={formData.stat1Label}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="stat2Value">Stat 2 Value *</Label>
+                <Label htmlFor="stat2Value">Patients Served Value *</Label>
                 <Input
                   id="stat2Value"
                   name="stat2Value"
+                  placeholder="10,000+"
                   value={formData.stat2Value}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="stat2Label">Stat 2 Label *</Label>
-                <Input
-                  id="stat2Label"
-                  name="stat2Label"
-                  value={formData.stat2Label}
                   onChange={handleChange}
                   required
                 />
@@ -614,6 +620,70 @@ export default function AdminSettingsPage() {
             <CardTitle>Working Hours</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="rounded-lg border border-blue-200 bg-blue-50/60 p-4 space-y-4">
+              <p className="text-sm font-semibold text-slate-900">Default Schedule</p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="default-schedule-start">Start Time</Label>
+                  <Input
+                    id="default-schedule-start"
+                    type="time"
+                    value={defaultSchedule.startTime}
+                    onChange={(event) =>
+                      setDefaultSchedule((prev) => ({
+                        ...prev,
+                        startTime: event.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="default-schedule-end">End Time</Label>
+                  <Input
+                    id="default-schedule-end"
+                    type="time"
+                    value={defaultSchedule.endTime}
+                    onChange={(event) =>
+                      setDefaultSchedule((prev) => ({
+                        ...prev,
+                        endTime: event.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-slate-800">
+                  Apply to selected days
+                </p>
+                <div className="grid gap-2 sm:grid-cols-4">
+                  {WORKING_HOUR_FIELDS.map((field) => (
+                    <label
+                      key={`bulk-${field.key}`}
+                      className="inline-flex items-center gap-2 text-sm text-slate-700"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={bulkApplyDays[field.key]}
+                        onChange={(event) =>
+                          handleBulkDayToggle(field.key, event.target.checked)
+                        }
+                      />
+                      {field.short}
+                    </label>
+                  ))}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={applyDefaultScheduleToSelectedDays}
+                >
+                  Apply to Selected Days
+                </Button>
+              </div>
+            </div>
+
+            <p className="text-sm font-semibold text-slate-900">Per-day Overrides</p>
             {WORKING_HOUR_FIELDS.map((field) => {
               const dayState = workingHours[field.key];
               return (

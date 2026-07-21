@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Reveal } from "@/components/ui/reveal";
-import { StatCounter } from "@/components/ui/stat-counter";
+import { unstable_noStore as noStore } from "next/cache";
+import { getSiteSettings } from "@/lib/site-settings";
+import { AnimatedNumber } from "@/components/ui/animated-number";
 
-export function HeroSection() {
+export async function HeroSection() {
+  noStore();
+  const settings = await getSiteSettings();
+
   return (
     // <section className="relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-100/60 pt-12">
     <section className="relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-white">
@@ -54,9 +59,9 @@ export function HeroSection() {
             <Reveal delay={0.2}>
               <div className="modern-surface rounded-2xl border border-white/80 p-6 shadow-sm cursor-pointer hover:shadow-lg transition-shadow">
                 <div className="text-3xl font-bold text-blue-600 mb-2 bg-dark">
-                  <StatCounter target={15} suffix="+" />
+                  <AnimatedNumber value={settings.stat1Value} />
                 </div>
-                <div className="text-gray-600 ">Years Experience</div>
+                <div className="text-gray-600 ">Clinical Experience</div>
               </div>
             </Reveal>
             <Reveal delay={0.26}>
@@ -65,9 +70,9 @@ export function HeroSection() {
               "
               >
                 <div className="text-3xl font-bold text-blue-600 mb-2">
-                  <StatCounter target={5000} suffix="+" />
+                  <AnimatedNumber value={settings.stat2Value} />
                 </div>
-                <div className="text-gray-600">Happy Patients</div>
+                <div className="text-gray-600">Patients Served</div>
               </div>
             </Reveal>
             <Reveal delay={0.32}>
@@ -76,7 +81,7 @@ export function HeroSection() {
               "
               >
                 <div className="text-3xl font-bold text-blue-600 mb-2">
-                  <StatCounter target={24} suffix="/7" />
+                  24/7
                 </div>
                 <div className="text-gray-600">Emergency Care</div>
               </div>

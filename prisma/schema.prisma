@@ -73,12 +73,9 @@ model Service {
 model SiteSettings {
   id              Int      @id @default(1)
   aboutImage      String?  @db.LongText
-  bioParagraph1   String   @db.Text
-  bioParagraph2   String   @db.Text
+  bioParagraph    String   @db.Text
   stat1Value      String
-  stat1Label      String
   stat2Value      String
-  stat2Label      String
   contactPhone    String
   contactEmail    String
   addressStreet   String
@@ -93,4 +90,12 @@ model SiteSettings {
   saturdayHours   String
   sundayHours     String
   updatedAt       DateTime @updatedAt
+}
+
+model Specialization {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

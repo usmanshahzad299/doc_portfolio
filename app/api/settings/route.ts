@@ -21,12 +21,9 @@ async function requireAdminUser() {
 }
 
 const REQUIRED_TEXT_FIELDS = [
-  "bioParagraph1",
-  "bioParagraph2",
+  "bioParagraph",
   "stat1Value",
-  "stat1Label",
   "stat2Value",
-  "stat2Label",
   "contactPhone",
   "contactEmail",
   "addressStreet",
@@ -83,14 +80,9 @@ export async function PUT(request: NextRequest) {
         ? aboutImageRaw.trim()
         : null;
 
-    const settings = await prisma.siteSettings.upsert({
+    const settings = await prisma.siteSettings.update({
       where: { id: 1 },
-      update: {
-        aboutImage,
-        ...cleaned,
-      },
-      create: {
-        id: 1,
+      data: {
         aboutImage,
         ...cleaned,
       },
@@ -113,8 +105,31 @@ export async function PUT(request: NextRequest) {
         { status: 400 }
       );
     }
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "P2025"
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Site settings record is missing. Please run the seed once, then try again.",
+        },
+        { status: 500 }
+      );
+    }
+    const detail =
+      error instanceof Error
+        ? error.message
+        : "Unexpected server error while updating settings.";
     return NextResponse.json(
-      { error: "Failed to update settings" },
+      {
+        error:
+          process.env.NODE_ENV === "production"
+            ? "Failed to update settings"
+            : `Failed to update settings: ${detail}`,
+      },
       { status: 500 }
     );
   }

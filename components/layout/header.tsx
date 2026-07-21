@@ -52,7 +52,7 @@ export function Header() {
               Blog
             </Link>
             <Link
-              href="/#contact"
+              href="/#appointments"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
               Contact

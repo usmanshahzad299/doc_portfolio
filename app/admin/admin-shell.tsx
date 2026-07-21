@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  BriefcaseMedical,
   Calendar,
   FileText,
   MessageSquareQuote,
@@ -36,8 +37,15 @@ const navItems = [
   {
     label: "Services",
     href: "/admin/services",
-    icon: Stethoscope,
+    icon: BriefcaseMedical,
     isActive: (pathname: string) => pathname.startsWith("/admin/services"),
+  },
+  {
+    label: "Specializations",
+    href: "/admin/specializations",
+    icon: Stethoscope,
+    isActive: (pathname: string) =>
+      pathname.startsWith("/admin/specializations"),
   },
   {
     label: "Site Settings",

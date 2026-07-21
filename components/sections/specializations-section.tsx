@@ -1,8 +1,10 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Reveal } from "@/components/ui/reveal"
+import { unstable_noStore as noStore } from "next/cache";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/ui/reveal";
+import { prisma } from "@/lib/prisma";
 
-const specializations = [
+const SPECIALIZATION_FALLBACK = [
   {
     title: "Internal Medicine",
     description: "Diagnosis and treatment for adult diseases with long-term care planning.",
@@ -19,9 +21,18 @@ const specializations = [
     title: "Teleconsultation",
     description: "Secure virtual follow-ups and convenient care from your home.",
   },
-]
+];
 
-export function SpecializationsSection() {
+export async function SpecializationsSection() {
+  noStore();
+  const specializationsFromDb = await prisma.specialization.findMany({
+    orderBy: { createdAt: "asc" },
+    select: { title: true, description: true },
+    take: 4,
+  });
+  const specializations =
+    specializationsFromDb.length > 0 ? specializationsFromDb : SPECIALIZATION_FALLBACK;
+
   return (
     <section id="specializations" className="bg-slate-50 py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,5 +63,5 @@ export function SpecializationsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
