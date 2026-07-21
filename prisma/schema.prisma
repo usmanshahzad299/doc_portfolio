@@ -73,7 +73,7 @@ model Service {
 model SiteSettings {
   id              Int      @id @default(1)
   aboutImage      String?  @db.LongText
-  bioParagraph    String   @db.Text
+  bioParagraph    String?  @db.Text
   stat1Value      String
   stat2Value      String
   contactPhone    String
